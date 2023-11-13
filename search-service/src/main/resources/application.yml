@@ -1,0 +1,4 @@
+spring:
+  elasticsearch:
+    uris:
+      - "${ELASTIC_URI:localhost:9200}"

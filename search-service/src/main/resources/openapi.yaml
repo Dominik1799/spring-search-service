@@ -1,0 +1,202 @@
+openapi: 3.0.0
+servers:
+  # Added by API Auto Mocking Plugin
+  - description: SwaggerHub API Auto Mocking
+    url: https://virtserver.swaggerhub.com/dominik-horvath/search-service/1.0.0
+info:
+  description: This is a simple API for adversea search service
+  version: "1.0.0"
+  title: search service
+paths:
+  /search:
+    get:
+      summary: Search for a person in adversea system
+      operationId: searchName
+      parameters:
+        - name: name
+          in: query
+          required: true
+          description: The name to search
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SearchResponse'
+
+  /sources:
+    get:
+      summary: Get source materials for an entity based on it's ID
+      operationId: getSources
+      parameters:
+        - name: entityId
+          in: query
+          required: true
+          description: ID of an entity you want to retrieve sources
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SourcesResponse'
+        '404':
+          description: Not found
+  /detail:
+    get:
+      summary: Get all available search information for a particular entity
+      operationId: getDetail
+      parameters:
+        - name: entityId
+          in: query
+          required: true
+          description: ID of an entity you want to retrieve details for
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DetailResponse'
+        '404':
+          description: Not found
+components:
+  schemas:
+    BasicEntityInfo:
+      type: object
+      properties:
+        name:
+          type: string
+          example: "Majo Kocner"
+        aliases:
+          type: array
+          items:
+            type: string
+            example: "Majko"
+        type:
+          type: string
+          example: person
+    SourcesResponse:
+      type: object
+      properties:
+        basic_info:
+          $ref: "#/components/schemas/BasicEntityInfo"
+        ams:
+          type: array
+          items:
+            type: string
+            example: "https://aktuality.sk/kocner"
+        pep:
+          type: array
+          items:
+            type: string
+            example: "tpod87d5ga8whnj78"
+
+        sl:
+          type: array
+          items:
+            type: string
+            example: "t98hr64f65d4g8"
+        all_articles:
+          type: array
+          description: Articles this person was identified in no matter the behaviour type
+          items:
+            type: string
+            example: "https://aktuality.sk/kocner"
+
+    SearchResponse:
+      type: array
+      items:
+        $ref: '#/components/schemas/SearchEntityResult'
+    SearchEntityResult:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        name_ascii:
+          type: string
+        type:
+          type: string
+          enum:
+            - person
+            - organization
+            - unknown
+        locations:
+          type: array
+          items:
+            type: string
+        source:
+          type: array
+          items:
+            type: string
+        ams_records_count:
+          type: integer
+          example: 5
+        pep_records_count:
+          type: integer
+          example: 1
+        sl_records_count:
+          type: integer
+          example: 2
+        all_articles_records_count:
+          type: integer
+          example: 2
+        aliases:
+          type: array
+          items:
+            type: string
+          example: ["majo", "majko"]
+    DetailResponse:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        name_ascii:
+          type: string
+        type:
+          type: string
+          enum:
+            - person
+            - organization
+            - unknown
+        locations_histogram:
+          type: object
+          additionalProperties:
+            type: integer
+          example:
+            New York: 5
+            Bratislava: 4
+        source:
+          type: array
+          items:
+            type: string
+        ams_records_count:
+          type: integer
+          example: 5
+        pep_records_count:
+          type: integer
+          example: 1
+        sl_records_count:
+          type: integer
+          example: 2
+        all_articles_records_count:
+          type: integer
+          example: 2
+        aliases_histogram:
+          type: object
+          additionalProperties:
+            type: integer
+          example:
+            Majo Kocner: 5
+            Marianko: 4

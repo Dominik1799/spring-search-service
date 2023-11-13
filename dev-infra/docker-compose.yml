@@ -1,0 +1,25 @@
+version: '3.5'
+services:
+    elasticsearch:
+        image: elasticsearch:8.8.1
+        container_name: elasticsearch
+        environment:
+            - discovery.type=single-node
+            - xpack.security.enabled=false
+            - http.port=9200
+            - bootstrap.memory_lock=true
+            - 'ES_JAVA_OPTS=-Xms2g -Xmx2g'
+        ports:
+            - '9200:9200'
+            - '9300:9300'
+        ulimits:
+            memlock:
+                soft: -1
+                hard: -1
+        volumes:
+            - ./mvp-elastic-data:/usr/share/elasticsearch/data
+
+
+networks:
+    default:
+        name: adversea
