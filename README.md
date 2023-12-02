@@ -3,18 +3,26 @@ contains some scripts that load data from articles / sanction lists into search 
 
 ## search-service
 
-spring project that contains the meat of the service. Runs on Java 17 and spring boot 3 Needs these ENV variables configured:
+spring project that contains the meat of the service. Runs on Java 17 and spring boot 3
+
+### DEV
+Needs these ENV variables configured:
 
 * ELASTIC_URI - host + port combo of elastic instance machine.
 
-
-To run localy, dont forget to to do
+To run localy, dont forget to do
 ```
 mvn clean compile
 ```
+This will create all the necessary classes so you can run it in your IDE. This is becasue this project uses OpenAPI spec file to generate the server stub interface + some DTOs that are required for function.
 
-This will create all the necessary classes so you can run it in your IDE. This is becasue this project uses OpenAPI spec file to generate the server stup interface + some DTOs that are required for function.
+You should also have running docker with docker-compose on your machine to launch elasticsearch locally.
+You can use dev-infra for this:
 
+```
+cd dev-infra
+docker-compose up -d
+```
 
 ## elastic fields explanation
 * name - name of the entity
@@ -28,6 +36,7 @@ This will create all the necessary classes so you can run it in your IDE. This i
 * ams_articles - array of links to articles where this person was found
 * sl_record - array of SL record IDs
 * pep_record - array of PEP record IDs
+* all_articles_records_count - total number of articles this person is part of, either as a adverse person or just mentioned there
 
 ## swagger
 https://app.swaggerhub.com/apis-docs/dominik-horvath/search-service/1.0.0
