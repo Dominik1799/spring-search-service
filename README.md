@@ -1,3 +1,6 @@
+# About
+This is a simple java server that reads data from elasticsearch. The project also contains the code necessary to load the data into elastic
+
 ## data-loader
 contains some scripts that load data from articles / sanction lists into search database
 
